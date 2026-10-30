@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Syntax gate
+        run: node tools/check.mjs src
+      - name: Generate audio fixtures
+        run: node tools/make-fixture.mjs
+      - name: Analysis and grid checks
+        run: node tools/test-analysis.mjs
+      - name: Transport worklet checks
+        run: node tools/test-worklet.mjs
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # No bundler: the app ships as plain ES modules served straight from Pages.
+      - name: Assemble site
+        run: |
+          set -eu
+          out=_site
+          rm -rf "$out"
+          mkdir -p "$out"
+          cp index.html manifest.webmanifest sw.js "$out/"
+          cp -r src styles icons "$out/"
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

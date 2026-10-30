@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0a0a0c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Deck" />
+    <title>Deck — iPad DJ</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="styles/app.css" />
+  </head>
+    <body>
+    <div id="boot" class="boot">
+      <div class="boot-inner">
+        <div class="boot-logo">DECK</div>
+        <div class="boot-hint">Tap anywhere to start the audio engine</div>
+      </div>
+    </div>
+
+    <div id="shell" class="shell" aria-hidden="true">
+      <header class="topbar">
+        <div class="brand">DECK<span>4</span></div>
+        <div class="top-group">
+          <button class="seg" data-deck-count="2" type="button">2</button>
+          <button class="seg is-on" data-deck-count="4" type="button">4</button>
+        </div>
+        <div class="global-tempo" id="globalTempo">
+          <span class="gt-label">GLOBAL</span>
+          <span class="gt-value" id="globalTempoValue">--.--</span>
+          <button class="gt-quant" id="globalQuant" type="button">QUANT 1/4</button>
+        </div>
+        <div class="top-group">
+          <button class="icon-btn" id="gridModeBtn" type="button" title="Beatgrid editor">GRID</button>
+          <button class="icon-btn" id="browserBtn" type="button" title="Browser">BROWSER</button>
+        </div>
+      </header>
+
+      <main class="stage" id="stage">
+        <div class="deck-col" id="colLeft"></div>
+        <div class="mixer" id="mixer"></div>
+        <div class="deck-col" id="colRight"></div>
+      </main>
+
+      <section class="browser" id="browser">
+        <aside class="browser-tree" id="browserTree"></aside>
+        <div class="browser-main">
+          <div class="browser-bar">
+            <button class="imp" id="importBtn" type="button">IMPORT FROM FILES</button>
+            <input id="filePick" type="file" accept="audio/*" multiple hidden />
+            <div class="search"><input id="searchBox" type="search" placeholder="Search title, artist…" /></div>
+            <span class="count" id="trackCount">0 tracks</span>
+          </div>
+          <div class="table-head">
+            <span class="c-num">#</span>
+            <span class="c-art"></span>
+            <span class="c-title">TITLE</span>
+            <span class="c-artist">ARTIST</span>
+            <span class="c-bpm">BPM</span>
+            <span class="c-key">KEY</span>
+            <span class="c-len">LEN</span>
+            <span class="c-name">FILE NAME</span>
+          </div>
+          <div class="table-body" id="trackList"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>

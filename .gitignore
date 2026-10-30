@@ -1,0 +1,14 @@
+# Regenerate with `node tools/make-fixture.mjs` — 27 MB of synthetic WAVs has no
+# business living in git.
+fixtures/
+
+# Qoder scratch
+handoff.md
+transcript.txt
+visualization-output/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

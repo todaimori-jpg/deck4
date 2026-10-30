@@ -1,0 +1,18 @@
+{
+  "name": "Deck — iPad DJ",
+  "short_name": "Deck",
+  "description": "Two to four deck DJ interface with fluid beatgrids, running entirely offline in the browser.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#08090b",
+  "theme_color": "#08090b",
+  "categories": ["music", "utilities"],
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
