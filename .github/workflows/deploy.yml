@@ -30,6 +30,8 @@ jobs:
         run: node tools/test-analysis.mjs
       - name: Transport worklet checks
         run: node tools/test-worklet.mjs
+      - name: Recording and file export checks
+        run: node tools/test-recording.mjs
 
   deploy:
     needs: test

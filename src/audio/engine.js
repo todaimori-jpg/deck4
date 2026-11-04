@@ -72,7 +72,17 @@ export class AudioEngine {
   }
 
   async resume() {
-    if (this.ctx && this.ctx.state === 'suspended') await this.ctx.resume();
+    if (this.ctx && (this.ctx.state === 'suspended' || this.ctx.state === 'interrupted')) await this.ctx.resume();
+  }
+
+  /** Stereo, post-EQ/limiter/trim master mix. The headphone cue bus stays out. */
+  recordingStream() {
+    if (!this.ready) throw new Error('Start the audio engine before recording.');
+    if (!this.recordingDestination) {
+      this.recordingDestination = this.ctx.createMediaStreamDestination();
+      this.masterGain.connect(this.recordingDestination);
+    }
+    return this.recordingDestination.stream;
   }
 
   now() {

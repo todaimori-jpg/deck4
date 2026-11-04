@@ -129,6 +129,194 @@ input {
   display: flex;
   gap: 2px;
 }
+
+/* --- master recorder ----------------------------------------------------- */
+.record-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+.record-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 9px;
+  background: #241718;
+  border: 1px solid #74413e;
+  border-radius: var(--radius);
+  color: #ffb5ad;
+  font-size: 10px;
+  font-weight: 700;
+  touch-action: manipulation;
+}
+.record-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
+}
+.record-btn.is-recording {
+  background: #651e1a;
+  border-color: var(--red);
+  color: #fff;
+}
+.record-btn.is-recording .record-dot {
+  border-radius: 1px;
+  background: #fff;
+}
+.record-time {
+  min-width: 38px;
+  font-variant-numeric: tabular-nums;
+}
+.record-tools .icon-btn {
+  min-height: 34px;
+}
+.record-tools button:disabled {
+  opacity: 0.5;
+}
+.recording-dialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 22px;
+  border: 1px solid #454c55;
+  border-radius: 10px;
+  background: #15171a;
+  color: var(--txt);
+  box-shadow: 0 18px 80px #000a;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.recording-dialog::backdrop {
+  background: #000a;
+}
+.recording-heading,
+.recording-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.recording-eyebrow {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: #ff9b8f;
+}
+.recording-heading h1 {
+  margin: 6px 0 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+.recording-help,
+.recording-empty {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #a8aeb6;
+}
+.recording-status {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--lime);
+}
+.recording-status:empty {
+  display: none;
+}
+.recording-empty {
+  padding: 18px 0;
+}
+.recording-field {
+  display: grid;
+  gap: 7px;
+  margin: 16px 0 10px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #a8aeb6;
+}
+.recording-field input,
+.recording-field select {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 0 10px;
+  border: 1px solid #454c55;
+  border-radius: 4px;
+  background: #0c0e10;
+  color: var(--txt);
+  font-size: 16px;
+  letter-spacing: normal;
+}
+.recording-meta {
+  color: #a8aeb6;
+  font-size: 12px;
+}
+.recording-preview {
+  display: block;
+  width: 100%;
+  height: 48px;
+  margin: 14px 0;
+}
+.recording-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+.recording-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #454c55;
+  border-radius: 4px;
+  background: #24282d;
+  color: var(--txt);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  touch-action: manipulation;
+}
+.recording-action.primary {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #18200c;
+}
+.recording-action.delete {
+  color: #ff9b8f;
+  margin-left: auto;
+}
+.recording-action:disabled {
+  opacity: 0.5;
+}
+.recording-footnote {
+  margin: 20px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+}
+.recording-dialog [hidden] {
+  display: none;
+}
+.record-tools button:focus-visible,
+.recording-dialog :focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+@media (max-width: 1000px) {
+  .topbar { gap: 6px; }
+  .global-tempo { padding-inline: 5px; gap: 4px; }
+}
+@media (max-width: 720px) {
+  .topbar { overflow-x: auto; }
+  .topbar > * { flex-shrink: 0; }
+  .global-tempo { margin: 0 auto; }
+  .gt-label { display: none; }
+  .recording-dialog { padding: 16px; }
+}
 .seg {
   min-width: 30px;
   height: 26px;
