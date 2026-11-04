@@ -41,6 +41,14 @@
           <button class="icon-btn" id="gridModeBtn" type="button" title="Beatgrid editor">GRID</button>
           <button class="icon-btn" id="browserBtn" type="button" title="Browser">BROWSER</button>
         </div>
+        <div class="record-tools" aria-label="Master mix recording">
+          <button class="record-btn" id="recordBtn" type="button" aria-pressed="false" aria-label="Start recording master mix">
+            <span class="record-dot" aria-hidden="true"></span>
+            <span id="recordLabel">REC</span>
+            <span class="record-time" id="recordTime">00:00</span>
+          </button>
+          <button class="icon-btn" id="recordingsBtn" type="button" aria-haspopup="dialog">TAKES <span id="recordingCount">0</span></button>
+        </div>
       </header>
 
       <main class="stage" id="stage">
@@ -72,6 +80,28 @@
         </div>
       </section>
     </div>
+
+    <dialog class="recording-dialog" id="recordingsDialog" aria-labelledby="recordingsTitle" aria-describedby="recordingsHelp">
+      <div class="recording-heading">
+        <div><span class="recording-eyebrow">STEREO MASTER MIX</span><h1 id="recordingsTitle">Recordings</h1></div>
+        <button class="recording-action" id="closeRecordings" type="button" aria-label="Close recordings" autofocus>CLOSE</button>
+      </div>
+      <p class="recording-help" id="recordingsHelp">Tap Save to Files, then choose <strong>Save to Files</strong> in the iPad share sheet. You can also download the audio file.</p>
+      <p class="recording-status" id="recordingStatus" role="status" aria-live="polite"></p>
+      <p class="recording-empty" id="recordingEmpty">No takes yet. Close this panel, tap REC, and play your mix. Tap STOP when you are done.</p>
+      <div id="recordingDetails" hidden>
+        <label class="recording-field" for="recordingSelect">TAKE<select id="recordingSelect"></select></label>
+        <p class="recording-meta" id="recordingMeta"></p>
+        <audio class="recording-preview" id="recordingPreview" controls playsinline preload="metadata"></audio>
+        <label class="recording-field" for="recordingName">FILE NAME<input id="recordingName" type="text" maxlength="100" autocomplete="off" spellcheck="false" /></label>
+        <div class="recording-actions">
+          <button class="recording-action primary" id="shareRecording" type="button">SAVE TO FILES</button>
+          <a class="recording-action" id="downloadRecording">DOWNLOAD</a>
+          <button class="recording-action delete" id="deleteRecording" type="button">DELETE TAKE</button>
+        </div>
+      </div>
+      <p class="recording-help recording-footnote">Takes stay on this device until deleted or browser storage is cleared. Save important mixes to Files. Keep DECK open and the screen unlocked while recording.</p>
+    </dialog>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

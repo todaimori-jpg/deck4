@@ -22,6 +22,7 @@ the device.
 | Hot cues | 8 slots over two pages, quantised, second press returns to where you came from |
 | Mixer | gain, 3-band EQ, sweep filter, pan, PFL cue, channel faders, VU meters |
 | Master | constant-power or sharp crossfader, 3-band master EQ, brickwall limiter |
+| Recording | stereo master capture, elapsed timer, take playback, iPad Save to Files and download |
 | Library | IndexedDB crate — audio bytes, byte-quantised peak envelopes and grid edits survive a reload |
 | Offline | service-worker shell cache + web manifest, so "Add to Home Screen" gives a real app |
 
@@ -64,6 +65,7 @@ node tools/make-fixture.mjs   # writes three synthetic WAVs into fixtures/
 node tools/check.mjs src      # syntax gate, every module under src/
 node tools/test-analysis.mjs  # 22 checks: tempo, peaks, grid maths, persistence
 node tools/test-worklet.mjs   # 23 checks: stretch, pitch, clicks, loops, reverse
+node tools/test-recording.mjs # recorder lifecycle, format fallback, master routing, file export
 ```
 
 The worklet suite renders real audio through the actual `DeckProcessor` and
@@ -113,6 +115,41 @@ can come from the Files app, "On My iPad", iCloud Drive or a connected USB
 drive. The first tap on a row selects it, then the `LOAD A B C D` chips put it
 on a deck.
 
+## Record a mix and save it to Files
+
+1. Tap **REC** in the top bar before playing your mix. The button becomes
+   **STOP** and shows the elapsed recording time.
+2. Mix normally. DECK captures the stereo master output after the crossfader,
+   EQ, limiter and master trim. Headphone cue is excluded; microphone permission
+   is not needed.
+3. Tap **STOP**. The Recordings panel opens with playback and an editable file
+   name. A completed take is also stored separately from your track library on
+   this device, so clearing the crate does not remove your recordings.
+4. On iPad, tap **SAVE TO FILES**, choose **Save to Files** in the share sheet,
+   then pick **On My iPad**, **iCloud Drive**, or a connected drive and tap Save.
+   If file sharing is unavailable, use **DOWNLOAD** and check Files → Downloads;
+   Safari may instead open an audio preview with its own Share button.
+5. Tap **TAKES** to reopen earlier recordings, play them, save another copy, or
+   delete a take from DECK. Deleting a take does not delete a copy in Files.
+
+Recording prefers AAC in an `.m4a` container on Safari, with WebM/Opus or the
+browser's supported format as a fallback. The extension always follows the
+actual recording format; changing the file name does not convert it to MP3.
+Cancelling the share sheet keeps your take available.
+
+Keep DECK in the foreground and the screen unlocked throughout a recording.
+Where supported, a screen wake lock is requested. An audio interruption stops
+the take and retains any captured data. Compressed chunks are held in memory
+until Stop (about 115 MB/hour at the requested 256 kbps; the browser can choose
+a different bitrate). Save important takes to Files: browser storage can be
+cleared or evicted, and a tab crash before Stop can lose an unfinished take.
+If local storage is full, the completed take stays available in memory with a
+prompt to export it before closing the app.
+
+Recording and native file sharing should be used over HTTPS, such as GitHub
+Pages. To receive this update in an installed PWA, reconnect to the internet,
+close all DECK windows, and reopen the app; the offline shell cache is versioned.
+
 ## Layout
 
 ```
@@ -120,6 +157,7 @@ src/
   audio/    deck-worklet.js  WSOLA + sample-accurate transport (AudioWorklet)
             engine.js        graph: decks -> EQ -> limiter -> master, PFL bus
             deck.js          transport intent: tempo, cue, loops, hot cues, sync
+            recorder.js      master mix recording, format negotiation, interruption handling
   analysis/ analyze.js       peaks, onset flux, tempo
             grid.js          BeatGrid tempo zones, TempoTapper
   ui/       widgets.js       pointer drag, knobs, faders, pads
@@ -127,6 +165,7 @@ src/
             deckview.js      one deck panel
             mixerview.js     channel strips + crossfader
             browser.js       crate tree, search, table
+            recordingview.js recording controls, take playback, Files export
   store/    library.js       IndexedDB crate + packed peak envelopes
   main.js   wiring and the rAF frame loop
 ```

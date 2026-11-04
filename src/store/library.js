@@ -8,7 +8,7 @@
  */
 
 const DB_NAME = 'deck-library';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 function open() {
   return new Promise((resolve, reject) => {
@@ -21,6 +21,9 @@ function open() {
       }
       if (!db.objectStoreNames.contains('audio')) {
         db.createObjectStore('audio', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('recordings')) {
+        db.createObjectStore('recordings', { keyPath: 'id' });
       }
     };
     req.onsuccess = () => resolve(req.result);
@@ -121,6 +124,33 @@ export class Library {
     await tx('tracks', 'readwrite', (s) => s.delete(id));
     await tx('audio', 'readwrite', (s) => s.delete(id));
     this.tracks = this.tracks.filter((t) => t.id !== id);
+  }
+
+  async saveRecording(take) {
+    await tx('recordings', 'readwrite', (s) => s.put(take));
+  }
+
+  async listRecordings() {
+    const rows = [];
+    await tx('recordings', 'readonly', (s) => {
+      const req = s.openCursor();
+      req.onsuccess = () => {
+        const cursor = req.result;
+        if (!cursor) return;
+        const { blob, ...metadata } = cursor.value;
+        rows.push({ ...metadata, size: blob.size });
+        cursor.continue();
+      };
+    });
+    return rows.sort((a, b) => b.createdAt - a.createdAt);
+  }
+
+  async getRecording(id) {
+    return tx('recordings', 'readonly', (s) => s.get(id));
+  }
+
+  async removeRecording(id) {
+    await tx('recordings', 'readwrite', (s) => s.delete(id));
   }
 
   async estimate() {

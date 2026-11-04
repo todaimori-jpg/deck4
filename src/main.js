@@ -12,6 +12,7 @@ import { Library, packPeaks, unpackPeaks } from './store/library.js';
 import { DeckView } from './ui/deckview.js';
 import { MixerView } from './ui/mixerview.js';
 import { BrowserView } from './ui/browser.js';
+import { RecordingView } from './ui/recordingview.js';
 import { el } from './ui/widgets.js';
 
 const $ = (id) => document.getElementById(id);
@@ -46,6 +47,7 @@ class App {
     this.decks.forEach((d) => this.mixer.addStrip(d));
 
     this.browser = new BrowserView(this);
+    this.recording = new RecordingView(this);
     this.bindChrome();
     this.setDeckCount(2);
     this.loop();
@@ -82,6 +84,8 @@ class App {
     window.addEventListener('keydown', (e) => {
       if (e.repeat || e.metaKey || e.ctrlKey) return;
       if (/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+      if ($('recordingsDialog').open) return;
+      if (document.activeElement.closest('.record-tools')) return;
       const map = { q: 0, w: 1, a: 2, s: 3 };
       if (map[e.key] !== undefined) {
         this.arm();
