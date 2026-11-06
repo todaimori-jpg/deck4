@@ -53,7 +53,7 @@ export class AudioEngine {
     this.analyser.connect(this.ctx.destination);
 
     this.pflGain = this.ctx.createGain();
-    this.pflGain.gain.value = 0;
+    this.pflGain.gain.value = 0.5;
     this.pflAnalyser = this.ctx.createAnalyser();
     this.pflAnalyser.fftSize = 1024;
     this.pflGain.connect(this.pflAnalyser);
@@ -83,6 +83,18 @@ export class AudioEngine {
       this.masterGain.connect(this.recordingDestination);
     }
     return this.recordingDestination.stream;
+  }
+
+  routePhoneCue() {
+    const destination = this.ctx.createMediaStreamDestination();
+    this.pflGain.connect(destination);
+    return {
+      stream: destination.stream,
+      release: () => {
+        this.pflGain.disconnect(destination);
+        destination.stream.getTracks().forEach((track) => track.stop());
+      },
+    };
   }
 
   now() {
@@ -131,14 +143,15 @@ export class AudioEngine {
     const pfl = ctx.createGain();
     pfl.gain.value = 0;
 
-    node.connect(volume);
-    volume.connect(low);
+    node.connect(low);
     low.connect(mid);
     mid.connect(high);
     high.connect(filter);
     filter.connect(pan);
-    pan.connect(out);
+    // PFL taps after EQ/filter and before both mixer faders.
     pan.connect(pfl);
+    pan.connect(volume);
+    volume.connect(out);
     out.connect(this.masterLow);
     pfl.connect(this.pflGain);
 

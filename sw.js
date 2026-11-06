@@ -6,10 +6,13 @@
  * after the user re-imports a track.
  */
 
-const CACHE = 'deck-shell-v2-recording';
+const CACHE = 'deck-shell-v3-phone-cue';
 const SHELL = [
   './',
   './index.html',
+  './phone-cue.html',
+  './phone-cue.js',
+  './phone-cue.css',
   './styles/app.css',
   './src/main.js',
   './src/audio/engine.js',
