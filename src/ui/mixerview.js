@@ -60,7 +60,7 @@ export class MixerView {
     const pfl = makeButton({
       label: '◐',
       className: 'mini',
-      title: 'Cue to headphones',
+      title: 'Pre-fader listen (phone cue)',
       onClick: () => {
         deck.setPfl(!deck.pflOn);
         pfl.setOn(deck.pflOn);
@@ -146,7 +146,7 @@ export class MixerView {
       if (!s.deck.chain.tap) {
         const a = eng.ctx.createAnalyser();
         a.fftSize = 512;
-        s.deck.chain.pan.connect(a);
+        s.deck.chain.volume.connect(a);
         s.deck.chain.tap = a;
       }
       const { peak, rms } = eng.meterLevel(s.deck.chain.tap);

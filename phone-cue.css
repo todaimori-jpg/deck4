@@ -1,0 +1,38 @@
+.phone-cue {
+  box-sizing: border-box;
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
+  overflow: auto;
+  padding: 1.25rem;
+  border: 1px solid #536477;
+  border-radius: 12px;
+  background: #151e29;
+  color: #f5f7fa;
+  font: 16px/1.45 system-ui, sans-serif;
+  color-scheme: dark;
+}
+main.phone-cue { margin: 1rem auto; }
+.phone-cue::backdrop { background: rgb(0 0 0 / 70%); }
+.phone-cue h1, .phone-cue h2 { margin: 0; font-size: 1.35rem; }
+.phone-cue label { display: block; margin-top: .8rem; }
+.phone-cue textarea, .phone-cue audio { display: block; width: 100%; margin: .35rem 0; }
+.phone-cue textarea {
+  box-sizing: border-box;
+  padding: .5rem;
+  font-size: 16px;
+  user-select: text;
+  -webkit-user-select: text;
+  touch-action: auto;
+}
+.phone-cue button {
+  min-height: 44px;
+  margin: .25rem .25rem .25rem 0;
+  padding: .5rem .8rem;
+  border: 1px solid #73859b;
+  border-radius: 6px;
+  background: #293a4d;
+  color: inherit;
+  font: inherit;
+}
+.phone-cue button:disabled { opacity: .5; }

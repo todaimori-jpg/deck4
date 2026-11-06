@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Headphone cue</title>
+<link rel="stylesheet" href="phone-cue.css">
+<main class="phone-cue">
+  <h1>Headphone cue</h1>
+  <p>Connect your headphones, then create a reply and paste it on the iPad. Once paired, press play and keep this page open.</p>
+  <button type="button" data-prepare>Create reply code</button>
+  <label>Reply code<textarea rows="3" data-reply readonly></textarea></label>
+  <button type="button" data-copy disabled>Copy reply</button>
+  <p role="status" aria-live="polite"></p>
+  <audio controls playsinline aria-label="Headphone cue stream"></audio>
+</main>
+<script type="module">
+  import { mountCueReceiver } from './phone-cue.js';
+  mountCueReceiver();
+</script>
+</html>

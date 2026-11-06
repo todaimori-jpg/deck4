@@ -4,6 +4,7 @@
  * repaints every canvas.
  */
 
+import { mountPhoneCue } from '../phone-cue.js';
 import { AudioEngine } from './audio/engine.js';
 import { Deck } from './audio/deck.js';
 import { analyzePeaks, analyzeTempo } from './analysis/analyze.js';
@@ -49,6 +50,7 @@ class App {
     this.browser = new BrowserView(this);
     this.recording = new RecordingView(this);
     this.bindChrome();
+    mountPhoneCue($('phoneCueButton'), () => this.arm(), () => this.engine.routePhoneCue());
     this.setDeckCount(2);
     this.loop();
   }
@@ -84,7 +86,7 @@ class App {
     window.addEventListener('keydown', (e) => {
       if (e.repeat || e.metaKey || e.ctrlKey) return;
       if (/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
-      if ($('recordingsDialog').open) return;
+      if (document.querySelector('dialog[open]')) return;
       if (document.activeElement.closest('.record-tools')) return;
       const map = { q: 0, w: 1, a: 2, s: 3 };
       if (map[e.key] !== undefined) {
